@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;  /* Beyaz */
+  --background-start-rgb: 15, 15, 15; /* Koyu gri */
+  --background-end-rgb: 10, 10, 10;   /* Daha koyu gri */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    );
+}
+
+@layer base {
+  h1 {
+    @apply text-3xl font-bold mb-4 text-light;
+  }
+  h2 {
+    @apply text-2xl font-bold mb-3 text-light;
+  }
+  h3 {
+    @apply text-xl font-bold mb-2 text-light;
+  }
+  p {
+    @apply text-accent;
+  }
+  button {
+    @apply transition-all duration-300;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+  }
+  .btn-primary {
+    @apply bg-accent text-primary hover:bg-light;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-accent hover:bg-dark border border-accent/20;
+  }
+  .btn-danger {
+    @apply bg-red-900 text-accent hover:bg-red-800;
+  }
+  .input {
+    @apply w-full bg-secondary px-4 py-3 rounded-md focus:outline-none 
+           border border-accent/10 text-light placeholder-accent/50 
+           focus:border-accent/30 focus:ring-1 focus:ring-accent/30;
+  }
+  .card {
+    @apply bg-secondary p-6 rounded-lg border border-accent/10 shadow-sm;
+  }
+  .text-muted {
+    @apply text-accent/70;
+  }
+}

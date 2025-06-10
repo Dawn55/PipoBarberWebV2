@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  name               String
+  surname            String
+  phoneNumber        String
+  email              String    @unique
+  password           String?
+  isAdmin            Boolean   @default(false)
+  isGuest            Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  appointments       Appointment[]
+  appointmentMessages AppointmentMessage[]
+  sentMessages       Message[] @relation("SentMessages")
+  receivedMessages   Message[] @relation("ReceivedMessages")
+}
+
+model Appointment { 
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  description String
+  date        DateTime
+  time        DateTime
+  createdAt   DateTime  @default(now())
+  status      Int       @default(0)
+  token       String?   @unique @default(uuid())
+
+  user        User      @relation(fields: [userId], references: [id])
+  messages    AppointmentMessage[]
+}
+
+model AppointmentMessage { 
+  id            Int       @id @default(autoincrement())
+  appointmentId Int
+  senderId      Int
+  text          String
+  createdAt     DateTime  @default(now())
+
+  appointment   Appointment @relation(fields: [appointmentId], references: [id])
+  sender        User        @relation(fields: [senderId], references: [id])
+}
+
+model Message {
+  id          Int       @id @default(autoincrement())
+  sender_id   Int
+  receiver_id Int
+  title       String
+  description String
+  createdAt   DateTime  @default(now())
+
+  sender      User      @relation("SentMessages", fields: [sender_id], references: [id])
+  receiver    User      @relation("ReceivedMessages", fields: [receiver_id], references: [id])
+}
+
+model Transaction {
+  id          Int       @id @default(autoincrement())
+  type        String    // "income" or "expense"
+  amount      Decimal
+  date        DateTime
+  description String
+  createdAt   DateTime  @default(now())
+}
