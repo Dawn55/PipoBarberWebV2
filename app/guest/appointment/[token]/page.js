@@ -7,23 +7,25 @@ export default async function GuestAppointmentPage({ params }) {
   if (!appointment) return notFound();
 
   async function getAppointmentByToken(token) {
-    const res = await fetch(
-      `http://localhost:3000/api/guests/appointment/${token}`,
-      {
-        cache: "no-store",
-      }
-    );
-    
-    if (!res.ok) return null;
-    const data = await res.json();
-    
-    // Ensure messages array exists
-    if (!data.messages) {
-      data.messages = [];
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  
+  const res = await fetch(
+    `${baseUrl}/api/guests/appointment/${token}`,
+    {
+      cache: "no-store",
     }
-    
-    return data;
+  );
+  
+  if (!res.ok) return null;
+  const data = await res.json();
+  
+  // Ensure messages array exists
+  if (!data.messages) {
+    data.messages = [];
   }
+  
+  return data;
+}
 
   return (
     <div className="max-w-3xl mx-auto py-10">
