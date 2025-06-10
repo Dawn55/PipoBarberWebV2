@@ -15,7 +15,11 @@ export async function POST(request, { params }) {
       );
     }
 
-    const session = await getSession(authOptions);
+    // ÇÖZÜM 1: getSession fonksiyonunuzu parametre olmadan kullanın
+    const session = await getSession();
+    
+    // VEYA ÇÖZÜM 2: Doğrudan getServerSession kullanın
+    // const session = await getServerSession(authOptions);
 
     const appointment = await prisma.appointment.findUnique({
       where: { id: appointmentId },
@@ -33,7 +37,7 @@ export async function POST(request, { params }) {
 
     // Eğer giriş yapılmışsa ve admin değilse, sadece kendi randevusuna mesaj atabilir
     if (session) {
-      console.log("pasa" ,session)
+      console.log("pasa", session);
       if (
         !session.user.isAdmin &&
         appointment.userId !== session.user.id
