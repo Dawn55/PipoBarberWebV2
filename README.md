@@ -100,8 +100,8 @@ Uygulama `http://localhost:3000` adresinde çalışmaya başlayacaktır.
 Test amaçlı admin hesabı oluşturmak için aşağıdaki bilgileri kullanabilirsiniz:
 
 **Admin Kullanıcısı:**
-- **Email:** admin@pipoberber.com
-- **Şifre:** admin123
+- **Email:** mari@gmail.com
+- **Şifre:** 123456
 
 > **Not:** Bu bilgiler sadece geliştirme ve test amaçlıdır. Üretim ortamında güvenli şifreler kullanın.
 
@@ -191,7 +191,6 @@ Bu proje özel kullanım içindir. Ticari kullanım için izin gereklidir.
 
 ## İletişim
 
-Proje hakkında sorularınız için [email@example.com](mailto:email@example.com) adresinden iletişim kurabilirsiniz.
 
 ---
 
