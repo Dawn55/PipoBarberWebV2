@@ -1,36 +1,198 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PipoBerber - Berber Salonu Yönetim Sistemi
 
-## Getting Started
+## Proje Tanımı
 
-First, run the development server:
+PipoBerber, modern berber salonları için geliştirilmiş kapsamlı bir yönetim sistemidir. Bu uygulama, müşteri randevu yönetimi, admin paneli, mesajlaşma sistemi ve finansal işlem takibi gibi temel özellikleri bir araya getirerek berber salonlarının günlük operasyonlarını dijitalleştirmeyi amaçlar.
 
+### Temel Özellikler
+
+- **Randevu Yönetimi**: Müşteriler online randevu alabilir, randevu durumlarını takip edebilir
+- **Admin Paneli**: Salon sahipleri tüm randevuları görüntüleyebilir ve yönetebilir
+- **Mesajlaşma Sistemi**: Müşteri-salon arası iletişim ve randevu bazlı mesajlaşma
+- **Kullanıcı Yönetimi**: Kayıt, giriş ve profil yönetimi
+- **Finansal Takip**: Gelir-gider takibi ve raporlama
+- **Misafir Erişimi**: Kayıt olmadan randevu alma imkanı
+
+## Kullanılan Teknolojiler
+
+### Frontend & Backend
+- **Next.js 14** - React tabanlı full-stack framework
+- **React 18** - Kullanıcı arayüzü kütüphanesi
+- **TypeScript** - Tip güvenliği için
+
+### Veritabanı & ORM
+- **Prisma** - Modern ORM ve veritabanı toolkit
+- **SQLite** - Hafif ve hızlı veritabanı
+
+### Styling & UI
+- **TailwindCSS** - Utility-first CSS framework
+- **Lucide React** - Modern ikonlar
+- **React Icons** - Ek ikon kütüphanesi
+- **React Hot Toast** - Bildirim sistemi
+
+### Authentication & Security
+- **NextAuth.js** - Kimlik doğrulama sistemi
+- **bcrypt/bcryptjs** - Şifre hashleme
+- **jsonwebtoken** - JWT token yönetimi
+
+### Ek Kütüphaneler
+- **React Hook Form** - Form yönetimi
+- **React Google Maps API** - Harita entegrasyonu
+- **date-fns** - Tarih manipulasyonu
+
+## Kurulum Talimatları
+
+### Gereksinimler
+- Node.js (v18 veya üzeri)
+- npm veya yarn paket yöneticisi
+- Git
+
+### Adım 1: Projeyi Klonlayın
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd pipoberber
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Adım 2: Bağımlılıkları Yükleyin
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Adım 3: Ortam Değişkenlerini Ayarlayın
+`.env.local` dosyası oluşturun ve aşağıdaki değişkenleri ekleyin:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+# Veritabanı
+DATABASE_URL="file:./dev.db"
 
-## Learn More
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key-here"
 
-To learn more about Next.js, take a look at the following resources:
+# JWT
+JWT_SECRET="your-jwt-secret-here"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Google Maps (opsiyonel)
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="your-google-maps-api-key"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Adım 4: Veritabanını Oluşturun
+```bash
+# Prisma istemcisini oluştur
+npx prisma generate
 
-## Deploy on Vercel
+# Veritabanı tablolarını oluştur
+npx prisma db push
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# (Opsiyonel) Prisma Studio ile veritabanını görüntüle
+npx prisma studio
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Adım 5: Geliştirme Sunucusunu Başlatın
+```bash
+npm run dev
+```
+
+Uygulama `http://localhost:3000` adresinde çalışmaya başlayacaktır.
+
+## Admin Giriş Bilgileri
+
+Test amaçlı admin hesabı oluşturmak için aşağıdaki bilgileri kullanabilirsiniz:
+
+**Admin Kullanıcısı:**
+- **Email:** admin@pipoberber.com
+- **Şifre:** admin123
+
+> **Not:** Bu bilgiler sadece geliştirme ve test amaçlıdır. Üretim ortamında güvenli şifreler kullanın.
+
+### Admin Hesabı Oluşturma (Manuel)
+Prisma Studio (`npx prisma studio`) kullanarak User tablosuna manuel olarak admin kullanıcısı ekleyebilirsiniz:
+
+```javascript
+// Şifreyi hashlemek için bcrypt kullanın
+const hashedPassword = await bcrypt.hash("admin123", 12);
+
+// User tablosuna eklenecek veri
+{
+  name: "Admin",
+  surname: "User",
+  email: "admin@pipoberber.com",
+  phoneNumber: "5555555555",
+  password: hashedPassword,
+  isAdmin: true,
+  isGuest: false
+}
+```
+
+## Proje Yapısı
+
+```
+pipoberber/
+├── app/                    # Next.js App Router
+│   ├── about/             # Hakkımızda sayfası
+│   ├── admin/             # Admin paneli
+│   ├── api/               # API routes
+│   ├── appointments/      # Randevu sayfaları
+│   ├── guest/             # Misafir randevu
+│   ├── login/             # Giriş sayfası
+│   └── register/          # Kayıt sayfası
+├── components/            # Yeniden kullanılabilir bileşenler
+├── helpers/               # Yardımcı fonksiyonlar
+├── lib/                   # Kütüphane konfigürasyonları
+├── prisma/                # Veritabanı şeması ve migrations
+│   ├── schema.prisma      # Prisma şema dosyası
+│   └── dev.db            # SQLite veritabanı
+└── public/                # Statik dosyalar
+```
+
+## Veritabanı Şeması
+
+Uygulama aşağıdaki ana tablolara sahiptir:
+
+- **User**: Kullanıcı bilgileri (müşteri/admin)
+- **Appointment**: Randevu bilgileri
+- **AppointmentMessage**: Randevu bazlı mesajlar
+- **Message**: Genel mesajlaşma
+- **Transaction**: Finansal işlemler
+
+## Önemli Scriptler
+
+```bash
+# Geliştirme sunucusu (Turbo ile)
+npm run dev
+
+# Üretim build'i
+npm run build
+
+# Üretim sunucusu
+npm start
+
+# Linting
+npm run lint
+
+# Prisma client oluştur
+npx prisma generate
+
+# Veritabanı senkronizasyonu
+npx prisma db push
+```
+
+## Katkıda Bulunma
+
+1. Projeyi fork edin
+2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
+3. Değişikliklerinizi commit edin (`git commit -m 'Add some amazing feature'`)
+4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
+5. Pull Request oluşturun
+
+## Lisans
+
+Bu proje özel kullanım içindir. Ticari kullanım için izin gereklidir.
+
+## İletişim
+
+Proje hakkında sorularınız için [email@example.com](mailto:email@example.com) adresinden iletişim kurabilirsiniz.
+
+---
+
+**Not:** Bu uygulama aktif geliştirme aşamasındadır. Öneriler ve geri bildirimler için issue açabilirsiniz.
